@@ -1,4 +1,5 @@
 import ProfilePage from './components/ProfilePage'
+import Counter from './components/Counter'
 import UserContext from './components/UserContext' 
 
 function App() {
