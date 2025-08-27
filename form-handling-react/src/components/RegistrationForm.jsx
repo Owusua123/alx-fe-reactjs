@@ -4,17 +4,36 @@ function RegistrationForm() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
 
+  
+  const [errors, setErrors] = useState({});
+
+  
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (!username || !email || !password) {
-      setError("All fields are required!");
+    // Reset errors
+    const newErrors = {};
+
+    
+    if (!username) {
+      newErrors.username = "Username is required";
+    }
+    if (!email) {
+      newErrors.email = "Email is required";
+    }
+    if (!password) {
+      newErrors.password = "Password is required";
+    }
+
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
       return;
     }
 
-    setError("");
+    setErrors({});
+
 
     console.log("User registered:", { username, email, password });
 
@@ -24,11 +43,13 @@ function RegistrationForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 max-w-md mx-auto p-4 border rounded">
+    <form
+      onSubmit={handleSubmit}
+      className="space-y-4 max-w-md mx-auto p-4 border rounded"
+    >
       <h2 className="text-xl font-bold">User Registration</h2>
 
-      {error && <p className="text-red-500">{error}</p>}
-
+      {/* Username field */}
       <div>
         <label className="block">Username</label>
         <input
@@ -37,8 +58,10 @@ function RegistrationForm() {
           onChange={(e) => setUsername(e.target.value)}
           className="border p-2 w-full rounded"
         />
+        {errors.username && <p className="text-red-500">{errors.username}</p>}
       </div>
 
+      {/* Email field */}
       <div>
         <label className="block">Email</label>
         <input
@@ -47,8 +70,10 @@ function RegistrationForm() {
           onChange={(e) => setEmail(e.target.value)}
           className="border p-2 w-full rounded"
         />
+        {errors.email && <p className="text-red-500">{errors.email}</p>}
       </div>
 
+      {/* Password field */}
       <div>
         <label className="block">Password</label>
         <input
@@ -57,9 +82,13 @@ function RegistrationForm() {
           onChange={(e) => setPassword(e.target.value)}
           className="border p-2 w-full rounded"
         />
+        {errors.password && <p className="text-red-500">{errors.password}</p>}
       </div>
 
-      <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">
+      <button
+        type="submit"
+        className="bg-blue-500 text-white px-4 py-2 rounded"
+      >
         Register
       </button>
     </form>
@@ -67,3 +96,4 @@ function RegistrationForm() {
 }
 
 export default RegistrationForm;
+
