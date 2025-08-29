@@ -1,5 +1,6 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 
+// Fetcher function
 const fetchPosts = async () => {
   const res = await fetch("https://jsonplaceholder.typicode.com/posts");
   if (!res.ok) throw new Error("Network response was not ok");
@@ -15,12 +16,16 @@ export default function PostsComponent() {
     isError,
     error,
     isFetching,
-    refetch
+    refetch,
   } = useQuery({
     queryKey: ["posts"],
     queryFn: fetchPosts,
-    // keep this component-level option to show "background refetch" indicator
-    refetchOnMount: false, // rely on cache first if it's fresh
+
+    // 👇 Advanced React Query options
+    staleTime: 60 * 1000,         // data stays fresh for 60s
+    cacheTime: 5 * 60 * 1000,     // cache is kept for 5min after unmount
+    refetchOnWindowFocus: false,  // disable auto-refetch when window gains focus
+    keepPreviousData: true,       // keep showing old data while fetching new
   });
 
   if (isLoading) return <p>Loading posts…</p>;
@@ -33,8 +38,6 @@ export default function PostsComponent() {
 
         <button
           onClick={() => {
-            // Example of manual cache invalidation
-            // Forces the next render to refetch (useful after mutations)
             queryClient.invalidateQueries({ queryKey: ["posts"] });
           }}
         >
