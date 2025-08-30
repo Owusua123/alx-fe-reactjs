@@ -1,18 +1,22 @@
-import { Outlet, Link } from "react-router-dom";
+import { Link, Routes, Route } from "react-router-dom";
+import ProfileDetails from "./ProfileDetails";
+import ProfileSettings from "./ProfileSettings";
 
 export default function Profile() {
   return (
     <div>
-      <h2>Profile Page</h2>
-      <p>Welcome to your profile! Use the links below to navigate.</p>
-
-      <nav style={{ display: "flex", gap: "1rem", marginBottom: "1rem" }}>
-        <Link to="details">Profile Details</Link>
-        <Link to="settings">Profile Settings</Link>
+      <h2 className="text-xl font-bold mb-2">Profile Page</h2>
+      <nav className="space-x-4">
+        <Link to="details">Details</Link>
+        <Link to="settings">Settings</Link>
       </nav>
 
-      {/* 👇 Nested routes will render here */}
-      <Outlet />
+      <div className="mt-4">
+        <Routes>
+          <Route path="details" element={<ProfileDetails />} />
+          <Route path="settings" element={<ProfileSettings />} />
+        </Routes>
+      </div>
     </div>
   );
 }
